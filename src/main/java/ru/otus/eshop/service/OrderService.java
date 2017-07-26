@@ -4,11 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.eshop.model.process.Order;
 import ru.otus.eshop.model.process.OrderRepository;
-import ru.otus.eshop.model.process.OrderStatus;
 
 @Service
 @Transactional
-public class OrderService implements IOrderService {
+class OrderService implements IOrderService {
     private final OrderRepository shopOrderRepository;
 
     public OrderService(OrderRepository shopOrderRepository) {
@@ -17,7 +16,7 @@ public class OrderService implements IOrderService {
 
     public Order pay(long orderId) {
         Order order = shopOrderRepository.findOne(orderId);
-        order.setStatus(OrderStatus.PAIED);
+        order.markPaid();
         shopOrderRepository.save(order);
         return order;
     }
@@ -25,7 +24,7 @@ public class OrderService implements IOrderService {
     @Override
     public Order cancel(long orderId) {
         Order order = shopOrderRepository.findOne(orderId);
-        order.setStatus(OrderStatus.CANCELLED);
+        order.markCancelled();
         shopOrderRepository.save(order);
         return order;
     }

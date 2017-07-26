@@ -1,14 +1,27 @@
 package ru.otus.eshop.model.catalog;
 
-import ru.otus.eshop.model.NamedEntity;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import ru.otus.eshop.model.NamedEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
 @Entity
 public class Property extends NamedEntity {
-    private PropertyType type;
+    @Enumerated(EnumType.STRING)
+    private @NonNull PropertyType type;
+
+    Property() {
+        super(null);
+    }
+
+    public Property(String name, PropertyType type) {
+        super(name);
+        this.type = type;
+    }
 }

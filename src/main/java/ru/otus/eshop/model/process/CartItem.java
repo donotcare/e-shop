@@ -1,5 +1,7 @@
 package ru.otus.eshop.model.process;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.otus.eshop.model.catalog.Product;
 import lombok.Getter;
 
@@ -9,7 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Embeddable
 public class CartItem implements Serializable {
@@ -19,15 +21,12 @@ public class CartItem implements Serializable {
     @Max(25)
     private int qnt;
 
-    CartItem() {
-    }
-
     private CartItem(Product product, int qnt) {
         this.product = product;
         this.qnt = qnt;
     }
 
-    public static CartItem createItem(Product product, int qnt) {
+    public static CartItem of(Product product, int qnt) {
         return new CartItem(product, qnt);
     }
 

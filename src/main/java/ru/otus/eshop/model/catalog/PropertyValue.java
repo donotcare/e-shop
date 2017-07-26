@@ -1,18 +1,18 @@
 package ru.otus.eshop.model.catalog;
 
+import lombok.*;
 import ru.otus.eshop.model.BaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
 public class PropertyValue extends BaseEntity {
-
     @OneToOne
-    private Property property;
-    private String value;
+    private @NonNull Property property;
+    private @NonNull String value;
 }

@@ -6,12 +6,9 @@ import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.catalog.ProductRepository;
 import ru.otus.eshop.model.process.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
-public class CartService implements ICartService {
+class CartService implements ICartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final OrderRepository shopOrderRepository;
@@ -25,7 +22,7 @@ public class CartService implements ICartService {
     public Product addToCart(long cartId, Long productId, int qnt) {
         Cart cart = cartRepository.findOne(cartId);
         Product product = productRepository.findOne(productId);
-        cart.addCartItem(CartItem.createItem(product, qnt));
+        cart.addCartItem(CartItem.of(product, qnt));
         cartRepository.save(cart);
         return product;
     }
@@ -33,7 +30,7 @@ public class CartService implements ICartService {
     public Product removeFromCart(long cartId, Long productId) {
         Cart cart = cartRepository.findOne(cartId);
         Product product = productRepository.findOne(productId);
-        cart.removeCartItem(CartItem.createItem(product, 1));
+        cart.removeCartItem(CartItem.of(product, 1));
         cartRepository.save(cart);
         return product;
     }
@@ -48,9 +45,6 @@ public class CartService implements ICartService {
     }
 
     private Order createShopOrder(Cart cart) {
-        Order order = Order.of(OrderNumber.generateOrderNumber());
-        List<OrderItem> orderItems = cart.getItems().values().stream().map(OrderItem::of).collect(Collectors.toList());
-        order.setItems(orderItems);
-        return order;
+        return Order.of(cart.getItems());
     }
 }

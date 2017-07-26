@@ -31,31 +31,15 @@ public class AppConfig {
         user.setName("admin");
         userRepository.save(user);
 
-        Property type = new Property();
-        type.setType(PropertyType.STRING);
-        type.setName("Тип");
+        Property type = new Property("Тип", PropertyType.STRING);
         propertyRepository.save(type);
-
-        Property diagonal = new Property();
-        diagonal.setType(PropertyType.STRING);
-        diagonal.setName("Диагональ");
+        Property diagonal = new Property("Диагональ", PropertyType.STRING);
         propertyRepository.save(diagonal);
 
-        Category category = new Category();
-        category.setName("Телевизоры");
+        PropertyValue productType = new PropertyValue(type, "ЖК");
+        PropertyValue productDiagonal = new PropertyValue(type, "19 \"");
 
-        ProductInfo productInfo = new ProductInfo();
-        productInfo.setName("LED Телевизор Samsung UE-19H4000");
-
-        PropertyValue productType = new PropertyValue();
-        productType.setProperty(type);
-        productType.setValue("ЖК");
-
-        PropertyValue productDiagonal = new PropertyValue();
-        productDiagonal.setProperty(type);
-        productDiagonal.setValue("19 \"");
-
-        productInfo.setProperties(Arrays.asList(productDiagonal, productType));
+        ProductInfo productInfo = new ProductInfo("LED Телевизор Samsung UE-19H4000", Arrays.asList(productDiagonal, productType));
 
         productInfoRepository.save(productInfo);
 
@@ -64,18 +48,10 @@ public class AppConfig {
         product.setPrice(new BigDecimal("25000.00"));
         productRepository.save(product);
 
-        ProductInfo productInfo2 = new ProductInfo();
-        productInfo2.setName("LED Телевизор Samsung UE-22H5000");
+        PropertyValue product2Type = new PropertyValue(type, "ЖК");
+        PropertyValue product2Diagonal = new PropertyValue(type, "17 \"");
 
-        PropertyValue product2Type = new PropertyValue();
-        product2Type.setProperty(type);
-        product2Type.setValue("ЖК");
-
-        PropertyValue product2Diagonal = new PropertyValue();
-        product2Diagonal.setProperty(type);
-        product2Diagonal.setValue("17 \"");
-
-        productInfo2.setProperties(Arrays.asList(product2Diagonal, product2Type));
+        ProductInfo productInfo2 = new ProductInfo("LED Телевизор Samsung UE-22H5000", Arrays.asList(product2Diagonal, product2Type));
 
         productInfoRepository.save(productInfo2);
 
@@ -84,8 +60,7 @@ public class AppConfig {
         product2.setPrice(new BigDecimal("40000.00"));
 
         productRepository.save(product2);
-
-        category.setProducts(Arrays.asList(product, product2));
+        Category category = new Category("Телевизоры", Arrays.asList(product, product2));
         categoryRepository.save(category);
     }
 
