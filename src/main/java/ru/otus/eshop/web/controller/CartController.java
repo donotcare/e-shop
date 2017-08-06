@@ -3,10 +3,8 @@ package ru.otus.eshop.web.controller;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 import ru.otus.eshop.service.ICartService;
 
 @RepositoryRestController
@@ -32,7 +30,7 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping(value = "/carts/{id}/checkout", method = RequestMethod.POST, produces = "application/hal+json")
-    public PersistentEntityResource checkout(@PathVariable("id") long cartId, PersistentEntityResourceAssembler assembler) {
-        return assembler.toFullResource(cartService.checkout(cartId));
+    public PersistentEntityResource checkout(@PathVariable("id") long cartId, @RequestBody DeliveryInfo deliveryInfo, PersistentEntityResourceAssembler assembler) {
+        return assembler.toFullResource(cartService.checkout(cartId, deliveryInfo));
     }
 }

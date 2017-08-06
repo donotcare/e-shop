@@ -3,6 +3,7 @@ package ru.otus.eshop.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.data.annotation.Version;
 import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.GeneratedValue;
@@ -17,4 +18,6 @@ public class BaseEntity implements Identifiable<Long> {
     @Id
     @GeneratedValue
     private Long id;
+    @Version
+    private long version;
 }

@@ -1,24 +1,22 @@
 package ru.otus.eshop.model.catalog;
 
-import lombok.*;
-import ru.otus.eshop.model.NamedEntity;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import ru.otus.eshop.model.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
-public class Category extends NamedEntity {
+public class Category extends BaseEntity {
+    private @NonNull String name;
     @OneToMany
-    private @NonNull List<Product> products;
+    private @NonNull List<ProductDescription> products;
 
-    Category() {
-        super(null);
-    }
-
-    public Category(String name, List<Product> products) {
-        super(name);
-        this.products = products;
-    }
 }

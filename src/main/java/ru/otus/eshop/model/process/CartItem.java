@@ -1,9 +1,8 @@
 package ru.otus.eshop.model.process;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import ru.otus.eshop.model.catalog.Product;
-import lombok.Getter;
+import com.google.common.base.Preconditions;
+import lombok.*;
+import ru.otus.eshop.model.catalog.ProductDescription;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
@@ -11,26 +10,26 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
+@RequiredArgsConstructor
 @Getter
 @Embeddable
 public class CartItem implements Serializable {
     @OneToOne
-    private Product product;
-    @Min(1)
+    private @NonNull ProductDescription product;
+    @Min(0)
     @Max(25)
-    private int qnt;
-
-    private CartItem(Product product, int qnt) {
-        this.product = product;
-        this.qnt = qnt;
+    private final int qnt;
+    public BigDecimal getAmount() {
+        return product.getCurrentPriceValue().multiply(BigDecimal.valueOf(qnt));
     }
 
-    public static CartItem of(Product product, int qnt) {
+    public static CartItem of(ProductDescription product, int qnt) {
+        Preconditions.checkArgument(qnt > 0);
         return new CartItem(product, qnt);
     }
-
-    public BigDecimal getAmount() {
-        return product.getPrice().multiply(BigDecimal.valueOf(qnt));
+    public static CartItem of(ProductDescription product) {
+        return new CartItem(product, 1);
     }
+
 }

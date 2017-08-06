@@ -1,25 +1,28 @@
 package ru.otus.eshop;
 
+import com.google.common.collect.ImmutableSet;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.otus.eshop.model.catalog.*;
-import ru.otus.eshop.model.system.User;
+import ru.otus.eshop.model.system.Role;
+import ru.otus.eshop.model.system.UserDetails;
 import ru.otus.eshop.model.system.UserRepository;
+import ru.otus.eshop.security.SecurityUtil;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class AppConfig {
-    private final ProductRepository productRepository;
-    private final ProductInfoRepository productInfoRepository;
+    private final ProductDescriptionRepository productInfoRepository;
     private final CategoryRepository categoryRepository;
     private final PropertyRepository propertyRepository;
     private final UserRepository userRepository;
 
-    public AppConfig(ProductRepository productRepository, ProductInfoRepository productInfoRepository, CategoryRepository categoryRepository, PropertyRepository propertyRepository, UserRepository userRepository) {
-        this.productRepository = productRepository;
+    public AppConfig(ProductDescriptionRepository productInfoRepository, CategoryRepository categoryRepository, PropertyRepository propertyRepository, UserRepository userRepository) {
         this.productInfoRepository = productInfoRepository;
         this.categoryRepository = categoryRepository;
         this.propertyRepository = propertyRepository;
@@ -27,9 +30,13 @@ public class AppConfig {
     }
 
     public void load() {
-        User user = new User();
-        user.setName("admin");
+        UserDetails user = new UserDetails("user", Collections.singletonList(Role.ADMIN));
+        user.setPassword("user");
         userRepository.save(user);
+
+        SecurityUtil.runAs("user", "user", "ROLE_ADMIN");
+
+        SecurityContextHolder.getContext().getAuthentication();
 
         Property type = new Property("Тип", PropertyType.STRING);
         propertyRepository.save(type);
@@ -38,29 +45,19 @@ public class AppConfig {
 
         PropertyValue productType = new PropertyValue(type, "ЖК");
         PropertyValue productDiagonal = new PropertyValue(type, "19 \"");
+        ProductPrice productPrice = ProductPrice.of(new BigDecimal("25000.00"));
+        ProductDescription productDescription = new ProductDescription("LED Телевизор Samsung UE-19H4000", ImmutableSet.of(productDiagonal, productType), productPrice);
 
-        ProductInfo productInfo = new ProductInfo("LED Телевизор Samsung UE-19H4000", Arrays.asList(productDiagonal, productType));
-
-        productInfoRepository.save(productInfo);
-
-        Product product = new Product();
-        product.setInfo(productInfo);
-        product.setPrice(new BigDecimal("25000.00"));
-        productRepository.save(product);
+        productInfoRepository.save(productDescription);
 
         PropertyValue product2Type = new PropertyValue(type, "ЖК");
         PropertyValue product2Diagonal = new PropertyValue(type, "17 \"");
+        ProductPrice productPrice2 = ProductPrice.of(new BigDecimal("40000.00"));
+        ProductDescription productDescription2 = new ProductDescription("LED Телевизор Samsung UE-22H5000", ImmutableSet.of(product2Diagonal, product2Type), productPrice2);
 
-        ProductInfo productInfo2 = new ProductInfo("LED Телевизор Samsung UE-22H5000", Arrays.asList(product2Diagonal, product2Type));
+        productInfoRepository.save(productDescription2);
 
-        productInfoRepository.save(productInfo2);
-
-        Product product2 = new Product();
-        product2.setInfo(productInfo2);
-        product2.setPrice(new BigDecimal("40000.00"));
-
-        productRepository.save(product2);
-        Category category = new Category("Телевизоры", Arrays.asList(product, product2));
+        Category category = new Category("Телевизоры", Arrays.asList(productDescription, productDescription2));
         categoryRepository.save(category);
     }
 
@@ -68,4 +65,5 @@ public class AppConfig {
     CommandLineRunner commandLineRunner(AppConfig dataLoader) {
         return (o) -> dataLoader.load();
     }
+
 }

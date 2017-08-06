@@ -1,50 +1,63 @@
 package ru.otus.eshop.service;
 
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.eshop.model.catalog.Product;
-import ru.otus.eshop.model.catalog.ProductRepository;
-import ru.otus.eshop.model.process.*;
+import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.ProductDescriptionRepository;
+import ru.otus.eshop.model.process.Cart;
+import ru.otus.eshop.model.process.CartItem;
+import ru.otus.eshop.model.process.CartRepository;
+import ru.otus.eshop.model.process.Order;
+import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 class CartService implements ICartService {
-    private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
-    private final OrderRepository shopOrderRepository;
+    private final @NonNull CartRepository cartRepository;
+    private final @NonNull ProductDescriptionRepository productRepository;
+    private final @NonNull IOrderService orderService;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, OrderRepository shopOrderRepository) {
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-        this.shopOrderRepository = shopOrderRepository;
-    }
-
-    public Product addToCart(long cartId, Long productId, int qnt) {
+    @Override
+    public ProductDescription addToCart(long cartId, long productId, int qnt) {
         Cart cart = cartRepository.findOne(cartId);
-        Product product = productRepository.findOne(productId);
+        ProductDescription product = productRepository.findOne(productId);
         cart.addCartItem(CartItem.of(product, qnt));
         cartRepository.save(cart);
         return product;
     }
 
-    public Product removeFromCart(long cartId, Long productId) {
+    @Override
+    public ProductDescription removeFromCart(long cartId, Long productId) {
         Cart cart = cartRepository.findOne(cartId);
-        Product product = productRepository.findOne(productId);
-        cart.removeCartItem(CartItem.of(product, 1));
+        ProductDescription product = productRepository.findOne(productId);
+        cart.removeCartItem(CartItem.of(product));
         cartRepository.save(cart);
         return product;
     }
 
-    public Order checkout(long cartId) {
+    @Override
+    public Order checkout(long cartId, DeliveryInfo deliveryInfo) {
         Cart cart = cartRepository.findOne(cartId);
-        Order order = createShopOrder(cart);
-        cart.clear();
-        cartRepository.save(cart);
-        shopOrderRepository.save(order);
+        Order order = orderService.createOrder(deliveryInfo, cart.getItems());
+        clearCart(cart);
         return order;
     }
 
-    private Order createShopOrder(Cart cart) {
-        return Order.of(cart.getItems());
+    @Override
+    public Cart clearCart(long cartId) {
+        Cart cart = cartRepository.findOne(cartId);
+        clearCart(cart);
+        return cart;
     }
+
+    private Cart clearCart(Cart cart) {
+        cart.clear();
+        cartRepository.save(cart);
+        return cart;
+    }
+
 }
