@@ -16,7 +16,7 @@
 package ru.otus.eshop.model.process;
 
 import org.springframework.test.util.ReflectionTestUtils;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 
 /**
  * Utility methods for testing.
@@ -37,8 +37,8 @@ public class TestUtils {
 		return order;
 	}
 
-	public static ProductDescription createExistingProduct() {
-		ProductDescription product = new ProductDescription();
+	public static Product createExistingProduct() {
+		Product product = new Product();
 		ReflectionTestUtils.setField(product, "id", 1L);
 		return product;
 	}

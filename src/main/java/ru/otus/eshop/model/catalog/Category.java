@@ -17,6 +17,6 @@ import java.util.List;
 public class Category extends BaseEntity {
     private @NonNull String name;
     @OneToMany
-    private @NonNull List<ProductDescription> products;
+    private @NonNull List<Product> products;
 
 }

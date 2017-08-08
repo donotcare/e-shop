@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.process.Order;
 import ru.otus.eshop.model.process.OrderRepository;
 import ru.otus.eshop.model.process.delivery.DeliveryInfo;
@@ -34,7 +34,7 @@ class OrderService implements IOrderService {
     }
 
     @Override
-    public Order createOrder(DeliveryInfo deliveryInfo, Map<ProductDescription, Integer> items) {
+    public Order createOrder(DeliveryInfo deliveryInfo, Map<Product, Integer> items) {
         Order order = Order.of(deliveryInfo);
         items.forEach(order::addItem);
         orderRepository.save(order);

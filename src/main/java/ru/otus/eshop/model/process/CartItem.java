@@ -2,7 +2,7 @@ package ru.otus.eshop.model.process;
 
 import com.google.common.base.Preconditions;
 import lombok.*;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 @Embeddable
 public class CartItem implements Serializable {
     @OneToOne
-    private @NonNull ProductDescription product;
+    private @NonNull
+    Product product;
     @Min(0)
     @Max(25)
     private final int qnt;
@@ -24,11 +25,11 @@ public class CartItem implements Serializable {
         return product.getCurrentPriceValue().multiply(BigDecimal.valueOf(qnt));
     }
 
-    public static CartItem of(ProductDescription product, int qnt) {
+    public static CartItem of(Product product, int qnt) {
         Preconditions.checkArgument(qnt > 0);
         return new CartItem(product, qnt);
     }
-    public static CartItem of(ProductDescription product) {
+    public static CartItem of(Product product) {
         return new CartItem(product, 1);
     }
 

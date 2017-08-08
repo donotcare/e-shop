@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.otus.eshop.model.catalog.ProductDescription;
-import ru.otus.eshop.model.catalog.ProductDescriptionRepository;
+import ru.otus.eshop.model.catalog.Product;
+import ru.otus.eshop.model.catalog.ProductRepository;
 import ru.otus.eshop.model.process.*;
 import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 
@@ -21,13 +21,11 @@ public class CartServiceUnitTest {
     @Mock
     private CartRepository cartRepository;
     @Mock
-    private ProductDescriptionRepository productRepository;
+    private ProductRepository productRepository;
     @Mock
     private IOrderService orderService;
-
     private ICartService cartService;
     private Cart cart;
-    private final long CART_ID = 1L;
 
     @Before
     public void setUp() {
@@ -55,50 +53,50 @@ public class CartServiceUnitTest {
         long productId = 1L;
         int qnt = 1;
 
-        when(cartRepository.findOne(CART_ID)).thenReturn(cart);
-        when(productRepository.findOne(productId)).thenReturn(new ProductDescription());
+        when(cartRepository.getCurrentUserCart()).thenReturn(cart);
+        when(productRepository.findOne(productId)).thenReturn(new Product());
 
         assertThat(cart.getItems().size(), is(0));
-        cartService.addToCart(CART_ID, productId, qnt);
+        cartService.addToCart(productId, qnt);
         assertThat(cart.getItems().size(), is(1));
     }
 
     @Test
     public void testRemoveFromCart() {
-        ProductDescription product = TestUtils.createExistingProduct();
+        Product product = TestUtils.createExistingProduct();
         cart.addCartItem(CartItem.of(product, 1));
 
-        when(cartRepository.findOne(CART_ID)).thenReturn(cart);
+        when(cartRepository.getCurrentUserCart()).thenReturn(cart);
         when(productRepository.findOne(product.getId())).thenReturn(product);
 
         assertThat(cart.getItems().size(), is(1));
-        cartService.removeFromCart(CART_ID, product.getId());
+        cartService.removeFromCart(product.getId());
         assertThat(cart.getItems().size(), is(0));
     }
 
     @Test
     public void testCheckout() {
-        ProductDescription product = TestUtils.createExistingProduct();
+        Product product = TestUtils.createExistingProduct();
         cart.addCartItem(CartItem.of(product, 1));
         DeliveryInfo deliveryInfo = mock(DeliveryInfo.class);
 
-        when(cartRepository.findOne(CART_ID)).thenReturn(cart);
+        when(cartRepository.getCurrentUserCart()).thenReturn(cart);
         when(orderService.createOrder(deliveryInfo, cart.getItems())).thenReturn(TestUtils.createExistingOrder());
 
-        Order order = cartService.checkout(CART_ID, deliveryInfo);
+        Order order = cartService.checkout(deliveryInfo);
         assertThat(order, is(notNullValue()));
         assertThat(cart.getItems().size(), is(0));
     }
 
     @Test
     public void testClearCart() {
-        ProductDescription product = TestUtils.createExistingProduct();
+        Product product = TestUtils.createExistingProduct();
         cart.addCartItem(CartItem.of(product, 1));
 
-        when(cartRepository.findOne(CART_ID)).thenReturn(cart);
+        when(cartRepository.getCurrentUserCart()).thenReturn(cart);
 
         assertThat(cart.getItems().size(), is(1));
-        cartService.clearCart(CART_ID);
+        cartService.clearCart();
         assertThat(cart.getItems().size(), is(0));
     }
 }

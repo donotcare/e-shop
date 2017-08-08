@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import ru.otus.eshop.model.BaseEntity;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 
 import javax.persistence.*;
@@ -23,9 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Table(name = "ShopOrder")
 public class Order extends BaseEntity {
     private OrderNumber number;
-    private
-    @NonNull
-    DeliveryInfo deliveryInfo;
+    private @NonNull DeliveryInfo deliveryInfo;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.NEW;
@@ -48,7 +46,7 @@ public class Order extends BaseEntity {
         return new Order(OrderNumber.generateOrderNumber(), deliveryInfo);
     }
 
-    public void addItem(ProductDescription product, int qnt) {
+    public void addItem(Product product, int qnt) {
         items.add(OrderItem.of(product, qnt));
     }
 

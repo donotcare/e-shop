@@ -14,7 +14,7 @@ public class CartResourceProcessor implements ResourceProcessor<Resource<Cart>> 
     @Override
     public Resource<Cart> process(Resource<Cart> resource) {
         Cart cart = resource.getContent();
-        resource.add(ControllerLinkBuilder.linkTo(methodOn(CartController.class).checkout(1, null, null)).withRel("checkout"));
+        resource.add(ControllerLinkBuilder.linkTo(methodOn(CartController.class).checkout(null, null)).withRel("checkout"));
         return resource;
     }
 }

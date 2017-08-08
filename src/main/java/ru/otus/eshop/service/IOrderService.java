@@ -1,6 +1,6 @@
 package ru.otus.eshop.service;
 
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.process.Order;
 import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 
@@ -11,5 +11,5 @@ public interface IOrderService {
 
     Order cancel(long orderId);
 
-    Order createOrder(DeliveryInfo deliveryInfo, Map<ProductDescription, Integer> items);
+    Order createOrder(DeliveryInfo deliveryInfo, Map<Product, Integer> items);
 }

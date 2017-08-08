@@ -1,22 +1,30 @@
 package ru.otus.eshop.model.process;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 import ru.otus.eshop.model.BaseEntity;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
+import ru.otus.eshop.model.system.UserDetails;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 public class Cart extends BaseEntity {
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private @NonNull UserDetails user;
+
     @ElementCollection
-    private Map<ProductDescription, CartItem> items = new HashMap<>();
+    private Map<Product, CartItem> items = new HashMap<>();
 
     public void addCartItem(CartItem item) {
         items.put(item.getProduct(), item);
@@ -30,7 +38,7 @@ public class Cart extends BaseEntity {
         items.clear();
     }
 
-    public Map<ProductDescription, Integer> getItems() {
+    public Map<Product, Integer> getItems() {
         return items.values().stream().collect(Collectors.toMap(CartItem::getProduct, CartItem::getQnt));
     }
 }

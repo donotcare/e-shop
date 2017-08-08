@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.process.Order;
 import ru.otus.eshop.model.process.OrderRepository;
 import ru.otus.eshop.model.process.OrderStatus;
@@ -59,8 +59,8 @@ public class OrderServiceUnitTest {
     @Test
     public void testCreateOrder() {
         DeliveryInfo delivery = mock(DeliveryInfo.class);
-        Map<ProductDescription, Integer> products = new HashMap<>();
-        products.put(mock(ProductDescription.class), 1);
+        Map<Product, Integer> products = new HashMap<>();
+        products.put(mock(Product.class), 1);
         Order order = orderService.createOrder(delivery, products);
         assertThat(order, is(notNullValue()));
         assertThat(order.getDeliveryInfo(), is(notNullValue()));

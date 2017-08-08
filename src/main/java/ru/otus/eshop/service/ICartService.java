@@ -1,16 +1,16 @@
 package ru.otus.eshop.service;
 
-import ru.otus.eshop.model.catalog.ProductDescription;
+import ru.otus.eshop.model.catalog.Product;
 import ru.otus.eshop.model.process.Cart;
 import ru.otus.eshop.model.process.Order;
 import ru.otus.eshop.model.process.delivery.DeliveryInfo;
 
 public interface ICartService {
-    ProductDescription addToCart(long cartId, long productId, int qnt);
+    Product addToCart(long productId, int qnt);
 
-    ProductDescription removeFromCart(long cartId, Long productId);
+    Product removeFromCart(long productId);
 
-    Order checkout(long cartId, DeliveryInfo deliveryInfo);
+    Order checkout(DeliveryInfo deliveryInfo);
 
-    Cart clearCart(long cartId);
+    Cart clearCart();
 }

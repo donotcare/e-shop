@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Entity
-public class ProductDescription extends BaseEntity {
+public class Product extends BaseEntity {
     private @NonNull String model;
 
     @ElementCollection
