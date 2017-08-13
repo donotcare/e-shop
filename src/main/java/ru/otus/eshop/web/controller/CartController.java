@@ -17,13 +17,12 @@ public class CartController {
 
     @ResponseBody
     @RequestMapping(value = "/cart/add/{productId}/qnt/{qnt}", method = RequestMethod.PUT, produces = "application/hal+json")
-    public PersistentEntityResource addToCart(@PathVariable("productId") long productId, @PathVariable("qnt") int qnt,
-                                              PersistentEntityResourceAssembler assembler) {
+    public PersistentEntityResource addToCart(@PathVariable("productId") long productId, @PathVariable("qnt") int qnt, PersistentEntityResourceAssembler assembler) {
         return assembler.toFullResource(cartService.addToCart(productId, qnt));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/cart/add/{productId}/remove", method = RequestMethod.DELETE, produces = "application/hal+json")
+    @RequestMapping(value = "/cart/remove/{productId}", method = RequestMethod.DELETE, produces = "application/hal+json")
     public PersistentEntityResource removeFromCart(@PathVariable("productId") long productId, PersistentEntityResourceAssembler assembler) {
         return assembler.toFullResource(cartService.removeFromCart(productId));
     }

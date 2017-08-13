@@ -3,6 +3,7 @@ package ru.otus.eshop.model.catalog;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 
@@ -11,7 +12,7 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
 public class PropertyValue {
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private @NonNull Property property;
     private @NonNull String value;
 }

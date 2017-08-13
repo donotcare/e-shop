@@ -6,6 +6,8 @@ import ru.otus.eshop.model.BaseEntity;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -14,9 +16,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Product extends BaseEntity {
-    private @NonNull String model;
 
+public class Product extends BaseEntity {
+    private @NonNull String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private @NonNull Category category;
     @ElementCollection
     private @NonNull Set<PropertyValue> properties;
     private @NonNull ProductPrice curentPrice;
@@ -29,5 +33,12 @@ public class Product extends BaseEntity {
 
     public boolean isAvailable() {
         return availableAmount > 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

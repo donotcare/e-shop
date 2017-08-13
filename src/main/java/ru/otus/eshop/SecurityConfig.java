@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/products/**").hasRole("USER")
-                .and()
+                .antMatchers("/register").permitAll()
+                .and().authorizeRequests().antMatchers("/h2-console/**").permitAll().and()
                 .csrf().disable()
                 .headers().frameOptions().sameOrigin();
     }

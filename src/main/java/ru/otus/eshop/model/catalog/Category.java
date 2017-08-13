@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import ru.otus.eshop.model.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -16,7 +14,4 @@ import java.util.List;
 @Entity
 public class Category extends BaseEntity {
     private @NonNull String name;
-    @OneToMany
-    private @NonNull List<Product> products;
-
 }
