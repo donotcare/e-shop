@@ -15,7 +15,7 @@ public class OrderResourceProcessor implements ResourceProcessor<Resource<Order>
     public Resource<Order> process(Resource<Order> resource) {
         Order order = resource.getContent();
         if(order.getStatus() == OrderStatus.NEW) {
-            resource.add(ControllerLinkBuilder.linkTo(methodOn(OrderController.class).checkout(order.getId(), null)).withRel("pay"));
+            resource.add(ControllerLinkBuilder.linkTo(methodOn(OrderController.class).pay(order.getId(), null)).withRel("pay"));
         }
         return resource;
     }

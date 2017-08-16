@@ -19,7 +19,7 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = "/orders/{id}/pay", method = RequestMethod.POST, produces = "application/hal+json")
-    public PersistentEntityResource checkout(@PathVariable("id") long orderId, PersistentEntityResourceAssembler assembler) {
+    public PersistentEntityResource pay(@PathVariable("id") long orderId, PersistentEntityResourceAssembler assembler) {
         return assembler.toFullResource(orderService.pay(orderId));
     }
 
