@@ -1,15 +1,21 @@
 package ru.otus.eshop;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.eshop.model.catalog.*;
-import ru.otus.eshop.model.process.filter.Filter;
-import ru.otus.eshop.model.process.filter.FilterCondition;
-import ru.otus.eshop.model.process.filter.FilterRepository;
+import ru.otus.eshop.catalog.category.Category;
+import ru.otus.eshop.catalog.category.CategoryRepository;
+import ru.otus.eshop.catalog.product.Product;
+import ru.otus.eshop.catalog.product.ProductRepository;
+import ru.otus.eshop.catalog.property.Property;
+import ru.otus.eshop.catalog.property.PropertyRepository;
+import ru.otus.eshop.process.filter.Filter;
+import ru.otus.eshop.process.filter.FilterCondition;
+import ru.otus.eshop.process.filter.FilterRepository;
 
 import java.util.List;
 
@@ -19,6 +25,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
+@RequiredArgsConstructor
 public class TestFilter {
     @Autowired
     private ProductRepository productRepository;

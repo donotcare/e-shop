@@ -5,12 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import ru.otus.eshop.model.catalog.*;
-import ru.otus.eshop.model.system.UserRegistration;
+import ru.otus.eshop.catalog.category.Category;
+import ru.otus.eshop.catalog.product.Product;
+import ru.otus.eshop.catalog.product.ProductPrice;
+import ru.otus.eshop.catalog.product.ProductRepository;
+import ru.otus.eshop.catalog.property.Property;
+import ru.otus.eshop.catalog.property.PropertyType;
+import ru.otus.eshop.catalog.property.PropertyValue;
+import ru.otus.eshop.system.UserRegistration;
 import ru.otus.eshop.security.SecurityUtil;
-import ru.otus.eshop.service.ICategoryService;
-import ru.otus.eshop.service.IPropertyService;
-import ru.otus.eshop.service.IRegistrationService;
+import ru.otus.eshop.catalog.category.ICategoryService;
+import ru.otus.eshop.catalog.property.IPropertyService;
+import ru.otus.eshop.process.registration.IRegistrationService;
 
 import java.math.BigDecimal;
 

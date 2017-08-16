@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import ru.otus.eshop.service.CurrentUserService;
+import ru.otus.eshop.system.CurrentUserService;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
