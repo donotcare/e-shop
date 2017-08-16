@@ -20,4 +20,13 @@ public class FilterCondition {
     private @NonNull Property property;
     @Transient
     private String currentValue;
+
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setValue(String value) {
+        this.currentValue = value;
+    }
+
 }

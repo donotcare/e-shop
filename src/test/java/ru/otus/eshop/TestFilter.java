@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.eshop.model.catalog.Category;
-import ru.otus.eshop.model.catalog.CategoryRepository;
-import ru.otus.eshop.model.catalog.Product;
-import ru.otus.eshop.model.catalog.ProductRepository;
+import ru.otus.eshop.model.catalog.*;
 import ru.otus.eshop.model.process.filter.Filter;
+import ru.otus.eshop.model.process.filter.FilterCondition;
 import ru.otus.eshop.model.process.filter.FilterRepository;
 
 import java.util.List;
@@ -28,12 +26,21 @@ public class TestFilter {
     private FilterRepository filterRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private PropertyRepository propertyRepository;
 
     @Test
     public void filter() {
         Category category = categoryRepository.findOne(1L);
         Filter filter = filterRepository.getFilterByCategory(category);
-        List<Product> products = productRepository.findAll(filter.getRealFilter());
+        Property property = propertyRepository.findOne(1L);
+        FilterCondition condition = filter.getConditionByProperty(property);
+        condition.setValue("ЖК");
+        List<Product> products = productRepository.findAll(filter);
         assertThat(products.size(), is(2));
+
+        condition.setValue("WRONG VALUE");
+        products = productRepository.findAll(filter);
+        assertThat(products.size(), is(0));
     }
 }
